@@ -9,8 +9,10 @@ class Album(models.Model):
     genre = models.CharField(max_length=100)
     album_logo = models.CharField(max_length=1000)
 
-    def get_absolute_url(self):
-        return reverse('music:detail', kwargs={'pk':self.pk})
+    def get_absolute_url(self):     #after filling in the form with above details where they need to be redircted is written here
+        return reverse('music:detail', kwargs={'pk':self.pk}) #kwargs means key word args
+    '''Whenever we take details view it take primary key of the album thats why
+    we are using kwargs in order to pass pk to the details view'''
 
     def __str__(self): #String representaion of Album object in database shell in order to print the values of Album object
         return self.album_title + '-' + self.artist #Whenever you type Album.objects.all() you will get values in this format instead of Object Return

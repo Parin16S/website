@@ -1,10 +1,10 @@
-{% for field in form %}
+{% for field in form %}  <!-- As we are crating a form for Albums table all the values come in the variable form by default thats why written like this-->
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <span class="text-danger small">{{field.err}}</span>
+            <span class="text-danger small">{{field.err}}</span> <!-- in order to get error msg right on top of the field-->
 
         </div>
-        <label class="control-label col-sm-2">{{ field.label_tag }}</label>
+        <label class="control-label col-sm-2">{{ field.label_tag }}</label><!-- This thing is always gonna disply. Give artist ,album title etc-->
         <div class="col-sm-10">{{field}}</div>
     </div>
 {% endfor %}

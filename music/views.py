@@ -1,6 +1,7 @@
 #We are going to delete everything in views.py and start from scratch
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy
 from .models import Album
 #from django.http import Http404 #No longer needed after importing get_object_or_404
 from django.http import HttpResponse
@@ -9,18 +10,26 @@ from django.http import HttpResponse
 
 class IndexView(generic.ListView):
     template_name = 'music/index.html'
-    context_object_name = 'all_albums'
+    context_object_name = 'all_albums' #pass the result of queryset as all_albums
 
     def get_queryset(self):
-        return Album.objects.all()
+        return Album.objects.all()  #by default the result is stored in object_list
 
 class DetailView(generic.DetailView):
     model = Album
     template_name = 'music/detail.html'
 
-class AlbumCreate(CreateView):
+class AlbumCreate(CreateView): #We dont need to specify the template name because of the naming convention album_form.html
     model = Album
     fields = ['artist', 'album_title', 'genre', 'album_logo']
+
+class AlbumUpdate(UpdateView): #We dont need to specify the template name because of the naming convention album_form.html
+    model = Album
+    fields = ['artist', 'album_title', 'genre', 'album_logo']
+
+class AlbumDelete(DeleteView):
+    model = Album
+    success_url = reverse_lazy('music:index')
 
 
 '''from django.shortcuts import render, get_object_or_404
@@ -58,9 +67,9 @@ the below function is commented jut for reference and original function will be 
         albums = Album.objects.get(pk=album_id)
     except Album.DoesNotExist:
         raise Http404("Album does not exists")
-    return render(request, 'music/detail.html', {'albuma':albums})'''
+    return render(request, 'music/detail.html', {'albuma':albums})'''#What is in quotes is the variable sent to detail.html
 
-'''def detail(request, album_id):
+'''def detail(request, album_id): #as there is a variable in url we are passing that in function detail
     album = get_object_or_404(Album, pk=album_id)
     return render(request, 'music/detail.html', {'albuma' : album})'''
 
@@ -75,7 +84,7 @@ the below function is commented jut for reference and original function will be 
     except (KeyError, Song.DoesNotExists):
         return render(request, 'music/detail.html', {
             'albuma':album,
-            'error_message':'You did not select a valid song'
+            'error_message':'You did not select a valid song' #This error_message is defined in detail.html
         })
     else:
         selected_song.is_favorite = True
